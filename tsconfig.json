@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "noImplicitAny": true,
+    "module": "es6",  // 指定生成哪个模块系统代码
+    "target": "es5",  // 指定ECMAScript目标版本
+    "jsx": "react",
+    "allowJs": true,
+    "moduleResolution": "node"
+  }
+}
