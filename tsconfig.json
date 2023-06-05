@@ -6,6 +6,10 @@
     "target": "es5",  // 指定ECMAScript目标版本
     "jsx": "react",
     "allowJs": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "baseUrl": ".",  // 告诉编译器到哪里去查找模块
+    "paths": {  // 路径映射
+      "@/*": ["src/*"]
+    }
   }
 }

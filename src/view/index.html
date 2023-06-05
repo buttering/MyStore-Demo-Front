@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <!-- html-webpack-plugin支持ejs语法 -->
+    <%= require('./common/common-head.htm') %>
+    <title>
+        <%= htmlWebpackPlugin.options.title %>
+    </title>
 </head>
 <body>
-
+    <%= require('./common/nav-top.htm') %>
+    <%= require('./common/nav-search.htm') %>
+    <div>Index</div>
+    <div class="loading"></div>
+    <%= require('./common/common-footer.htm') %>
 </body>
 </html>
