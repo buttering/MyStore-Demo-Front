@@ -1,6 +1,7 @@
 import axios, {ResponseType} from "axios";
 import * as Hogan from "hogan.js";
 
+
 const config = {
     serverHost: 'http://localhost:8099/'
 }
@@ -11,10 +12,14 @@ interface requestParam {
     method?: string;
     url?: string;
     type?: ResponseType;
-    data?: object;
+    data?: string;
     success: successFunction;
     error: errorFunction;
 }
+type VALIDATE_TYPE =
+    | 'require'
+    | 'email'
+    | 'phone'
 
 const _common_util = {
     /*发送http请求常用方法：
@@ -32,6 +37,7 @@ const _common_util = {
             data: param.data || '',
             withCredentials: true,
             timeout: 3000,
+            headers: {'Content-Type': 'application/json;charset=UTF-8'},
             validateStatus: (status) => status === 200  // 只有状态码为200进行resolved，否则rejected
         }).then((response) => {
             if (0 === response.data.code)
@@ -64,7 +70,7 @@ const _common_util = {
         return result ? decodeURIComponent(result[2]): null  // 解码编码后的URI
     },
     // 字段校验，支持字符串非空校验(require)、手机格式校验(phone)、邮箱格式校验(email)
-    validate: (value: string, type: string) => {
+    validate: (value: string, type: VALIDATE_TYPE) => {
         value = $.trim(value)
         if ('require' === type)
             return !!value  // 转化为布尔值

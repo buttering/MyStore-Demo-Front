@@ -14,6 +14,9 @@ const _nav_top = {
         _user_service.getUserInfo(
             (data) => {
                 console.log(data)
+                $('.not-login').hide()
+                    .siblings('.login').show()
+                    .find('.username').text((<any>data).username)
             },
             (message, code) => {
                 console.log(message)
