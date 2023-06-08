@@ -41,19 +41,26 @@ module.exports = {
     devtool: 'inline-source-map',  // 此配置仅用于示例，不要用于生产环境
     module: {
         rules: [
-            { test: /\.css$/i, use: [MiniCssExtractPlugin.loader, 'css-loader'] },
-            { test: /\.tsx?$/i, use: 'ts-loader', exclude: /node_modules/ },
+            {
+                test: /\.css$/i,
+                use: [MiniCssExtractPlugin.loader, 'css-loader']
+            },
+            {
+                test: /\.tsx?$/i,
+                use: 'ts-loader', exclude: /node_modules/
+            },
             {
                 test: /\.(woff|woff2|eot|ttf|otf|gif|jpg|avif|png|webp)$/i,
                 type: "asset/resource"  // 发送一个单独的文件并导出 URL
             },
             {
-                test: /htm$/i,
+                test: /\.(htm|template)$/i,
                 use: {
                     loader: 'html-loader',  // htm后缀文件转化为字符串处理
                     options: {esModule: false}
                 }
-            }
+            },
+
         ]
     },
     plugins: [

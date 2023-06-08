@@ -14,7 +14,7 @@ interface requestParam {
     type?: ResponseType;
     data?: string;
     success: successFunction;
-    error: errorFunction;
+    error?: errorFunction;
 }
 type VALIDATE_TYPE =
     | 'require'
@@ -45,9 +45,9 @@ const _common_util = {
             else if (11 === response.data.code)
                 this.toLogin()
             else
-                param.error(response.data.message, response.data.code)
+                typeof param.error === 'function' && param.error(response.data.message, response.data.code)
         }).catch((err) => {
-            param.error(err.statusText)
+            typeof param.error === 'function' && param.error(err.statusText)
         })
     },
     // 跳转统一登录页面
@@ -56,6 +56,7 @@ const _common_util = {
         // 对任何用户输入的作为 URI 部分的内容都需要用 encodeURIComponent 进行转义。
         window.location.href = './user-login.html?redirect=' + encodeURIComponent(window.location.href),
     // 获取服务器地址
+    toIndex: () => window.location.href = './index.html',
     getServerURL: (path: string) => {
         return config.serverHost + path;
     },
@@ -80,7 +81,7 @@ const _common_util = {
             return /^([a-zA-Z\d][\w-]{2,})@(\w{2,})\.([a-z]{2,})(\.[a-z]{2,})?$/.test(value)
     },
     //使用hogan.js渲染数据到网页上
-    renderHTML : function(htmlTemplate: string, data: Hogan.Context){
+    renderHTML : function(htmlTemplate: string, data?: Hogan.Context): string{
         const template = Hogan.compile(htmlTemplate);
         return template.render(data)
     },
