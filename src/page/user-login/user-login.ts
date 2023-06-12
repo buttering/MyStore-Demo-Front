@@ -2,7 +2,7 @@ import './user-login.css'
 import '@/page/common/nav-top-simple/nav-top-simple'
 import {common_result} from "@/utils/common-result";
 import {_common_util} from "@/utils/util";
-import {user_login_VO} from "@/VO/user-login-VO";
+import {user_login_DTO} from "@/DTO/user-login-DTO";
 import {_user_service} from "@/service/user-service";
 
 
@@ -27,7 +27,7 @@ const _user_login = {
         })
     },
     submit: function () {
-        let formData: user_login_VO = {
+        let formData: user_login_DTO = {
             username: $.trim(<string>$('#username').val()),
             password: $.trim(<string>$('#password').val())
         }
@@ -46,7 +46,7 @@ const _user_login = {
             errorItem.show(result.msg)
         }
     },
-    formDataValidate: function (formData: user_login_VO) {
+    formDataValidate: function (formData: user_login_DTO) {
         let result: common_result = {msg: "", status: false}
         result.status = false
         if (!_common_util.validate(formData.username, 'require')){

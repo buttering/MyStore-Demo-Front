@@ -30,7 +30,8 @@ module.exports = {
     entry: {
         'index'     : './src/page/index/index.ts',
         'common'    : './src/page/common/common.ts',
-        'user-login': './src/page/user-login/user-login.ts'
+        'user-login': './src/page/user-login/user-login.ts',
+        'product-list': '/src/page/product-list/product-list.ts'
     },
     output: {
         filename: 'js/[name].js',
@@ -67,6 +68,7 @@ module.exports = {
         // new CleanWebpackPlugin(),
         new HtmlWebpackPlugin(getHtmlWebPackPluginConfig("index")),
         new HtmlWebpackPlugin(getHtmlWebPackPluginConfig("user-login")),
+        new HtmlWebpackPlugin(getHtmlWebPackPluginConfig("product-list")),
         new MiniCssExtractPlugin({filename: 'css/[name].css'})  // name由entry指定
     ],
     devServer: {

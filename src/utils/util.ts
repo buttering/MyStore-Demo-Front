@@ -4,18 +4,21 @@ import * as Hogan from "hogan.js";
 
 const config = {
     serverHost: 'http://localhost:8099/'
-}
+};
 
 type successFunction = (data: object | string) => void
 type errorFunction = (message: string, code?: number) => void
+
 interface requestParam {
     method?: string;
     url?: string;
     type?: ResponseType;
     data?: string;
+    param?: object;
     success: successFunction;
     error?: errorFunction;
 }
+
 type VALIDATE_TYPE =
     | 'require'
     | 'email'
@@ -30,25 +33,27 @@ const _common_util = {
     * 5. Axios：在服务端它使用原生 node.js http 模块, 而在客户端 (浏览端) 则使用 XMLHttpRequests，只不过它是Promise的实现版本。基本优于fetch，需要第三方库
     * */
     request: function (this: any, param: requestParam) {
+        console.log(param.data);
         axios({
             method: param.method || 'GET',
             url: param.url || '',
             responseType: param.type || 'json',
             data: param.data || '',
+            params: param.param || {},
             withCredentials: true,
             timeout: 3000,
             headers: {'Content-Type': 'application/json;charset=UTF-8'},
             validateStatus: (status) => status === 200  // 只有状态码为200进行resolved，否则rejected
         }).then((response) => {
             if (0 === response.data.code)
-                param.success(response.data.data)
+                param.success(response.data.data);
             else if (11 === response.data.code)
-                this.toLogin()
+                this.toLogin();
             else
-                typeof param.error === 'function' && param.error(response.data.message, response.data.code)
+                typeof param.error === 'function' && param.error(response.data.message, response.data.code);
         }).catch((err) => {
-            typeof param.error === 'function' && param.error(err.statusText)
-        })
+            typeof param.error === 'function' && param.error(err.statusText);
+        });
     },
     // 跳转统一登录页面
     toLogin: () =>
@@ -68,30 +73,35 @@ const _common_util = {
         const paramString: string = window.location.search.substring(1);
         const regExp: RegExp = new RegExp('(^|&)' + name + '=([^&]*)(&|$)');  // 第二个匹配捕获 开头、&、结尾 之间的字符
         const result: RegExpMatchArray = paramString.match(regExp);
-        return result ? decodeURIComponent(result[2]): null  // 解码编码后的URI
+        return result ? decodeURIComponent(result[2]) : null;  // 解码编码后的URI
+    },
+    replaceURLParam(url: string, name: string, value: any){
+        const urlObj = new URL(url);
+        urlObj.searchParams.set(name, value);
+        return urlObj.href;
     },
     // 字段校验，支持字符串非空校验(require)、手机格式校验(phone)、邮箱格式校验(email)
     validate: (value: string, type: VALIDATE_TYPE) => {
-        value = $.trim(value)
+        value = $.trim(value);
         if ('require' === type)
-            return !!value  // 转化为布尔值
+            return !!value;  // 转化为布尔值
         if ('phone' === type)
-            return /^1\d{10}$/.test(value)
-        if ('email'=== type)
-            return /^([a-zA-Z\d][\w-]{2,})@(\w{2,})\.([a-z]{2,})(\.[a-z]{2,})?$/.test(value)
+            return /^1\d{10}$/.test(value);
+        if ('email' === type)
+            return /^([a-zA-Z\d][\w-]{2,})@(\w{2,})\.([a-z]{2,})(\.[a-z]{2,})?$/.test(value);
     },
     //使用hogan.js渲染数据到网页上
-    renderHTML : function(htmlTemplate: string, data?: Hogan.Context): string{
+    renderHTML: function (htmlTemplate: string, data?: Hogan.Context): string {
         const template = Hogan.compile(htmlTemplate);
-        return template.render(data)
+        return template.render(data);
     },
-    errorTips : (msg: string) => {
+    errorTips: (msg: string) => {
         alert(msg || '出错啦～～～');
     },
     //成功提示
-    successTips : (msg: string) => {
+    successTips: (msg: string) => {
         alert(msg || '操作成功～～～');
-    },
+    }
 };
 
-export {_common_util, successFunction, errorFunction}
+export {_common_util, successFunction, errorFunction};

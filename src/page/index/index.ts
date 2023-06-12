@@ -8,7 +8,7 @@ const bannerTemplate = require('./banner.template')
 
 $(function () {
     const bannerHTML = _common_util.renderHTML(bannerTemplate);
-    (<any>$('.banner-content')).html(bannerHTML);
+    $('.banner-content').html(bannerHTML);
     (<any>$('.banner')).unslider({
         dots: true
     })
